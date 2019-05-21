@@ -604,15 +604,15 @@
           return False;
       } elseif (isset($state->hcolor))
         return False;
-      
-      if (isset($this->font)) {
-        if (!isset($state->font))
-          return False;
-        elseif (  self::$fonttbl[$this->font]->fontfamily != 
-                  self::$fonttbl[$state->font]->fontfamily)
-          return False;        
-      } elseif (isset($state->font))
-        return False;
+
+		// Check if font is set
+        if (isset($this->font)) {
+            if (!isset($state->font))
+                return False;
+            elseif (isset(self::$fonttbl[$this->font]) and self::$fonttbl[$this->font]->fontfamily != self::$fonttbl[$state->font]->fontfamily)
+                return False;
+        } elseif (isset($state->font))
+            return False;
       
       return True;
     }
@@ -920,7 +920,7 @@
       $utf8 = '';
       
       if ($srcEnc != 'UTF-8') { // convert character to Unicode
-        $utf8 = iconv($srcEnc, 'UTF-8', chr($code));
+        $utf8 = iconv($srcEnc, 'UTF-8//IGNORE', chr($code));
       }
       
       if ($this->encoding == 'HTML-ENTITIES') {
